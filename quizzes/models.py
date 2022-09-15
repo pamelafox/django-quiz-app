@@ -28,10 +28,9 @@ class Quiz(models.Model):
 class Question(models.Model):
   quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
   prompt = models.CharField(max_length=200)
-  answer_status = models.CharField(default='unanswered', max_length=16)
 
   def __str__(self):
-    return f"<Question: {self.prompt}>"
+    return self.prompt
 
   def display(self):
     print(self.prompt)
@@ -44,15 +43,22 @@ class Question(models.Model):
       print(f"Sorry, it was: {self.answer.correct_answer}")
       self.answer_status = 'incorrect'
 
-
-# Create your models here.
-class FreeTextAnswer(models.Model):
-  question = models.ForeignKey(Question, on_delete=models.CASCADE)
+class Answer(models.Model):
+  question = models.OneToOneField(
+        Question,
+        on_delete=models.CASCADE
+    )
   correct_answer = models.CharField(max_length=200)
+
+
+  class Meta:
+    abstract = True
+
+class FreeTextAnswer(Answer):
   case_sensitive = models.BooleanField(default=False)
 
   def __str__(self):
-    return f"<FreeTextAnswer: {self.correct_answer}>"
+    return self.correct_answer
 
   def is_correct(self, user_answer):
     if not self.case_sensitive:
@@ -65,13 +71,11 @@ class FreeTextAnswer(models.Model):
     else:
       print("Type your answer in (don't worry about capitalization):")
 
-class MultipleChoiceAnswer(models.Model):
-  question = models.ForeignKey(Question, on_delete=models.CASCADE)
-  correct_answer = models.CharField(max_length=200)
+class MultipleChoiceAnswer(Answer):
   choices = fields.ArrayField(models.CharField(max_length=200, blank=True))
 
   def __str__(self):
-    return f"<MultipleChoiceAnswer: {self.correct_answer} of {self.choices}>"
+    return f"{self.correct_answer} from {self.choices}"
 
   def is_correct(self, user_answer):
     """Assumes user answer is number corresponding to answer."""

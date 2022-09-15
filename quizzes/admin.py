@@ -1,7 +1,15 @@
 from django.contrib import admin
-from .models import Quiz, Question, FreeTextAnswer, MultipleChoiceAnswer
+from .models import Quiz, Question, Answer, FreeTextAnswer, MultipleChoiceAnswer
 
 admin.site.register(Quiz)
-admin.site.register(Question)
-admin.site.register(FreeTextAnswer)
-admin.site.register(MultipleChoiceAnswer)
+
+class FreeTextAnswerInline(admin.StackedInline):
+    model = FreeTextAnswer
+
+class MultipleChoiceAnswerInline(admin.StackedInline):
+    model = MultipleChoiceAnswer
+
+class QuestionAdmin(admin.ModelAdmin):
+    inlines = [FreeTextAnswerInline, MultipleChoiceAnswerInline]
+
+admin.site.register(Question, QuestionAdmin)

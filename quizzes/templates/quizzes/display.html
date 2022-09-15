@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Quiz {{ quiz.id }}</title>
+</head>
+<body>
+    <h1>{{ quiz.name }}</h1>
+
+    <form action="{% url 'quizzes:grade' question.id %}" method="post">
+        {% csrf_token %}
+    {% for question in quiz.question_set.all %}
+    <section>
+        <h3>{{ question.prompt }}</h3>
+        {% if question.freetextanswer %}
+        <input type="text" name="{{ question.pk }}">
+        {% else %}
+        {% for choice in question.multiplechoiceanswer.choices %}
+        <label>
+            <input type="radio" name="{{ question.pk }}" value="{{ choice }}">
+            {{ choice}}
+        </label>
+        {% endfor %}
+        {% endif %}
+    </section>
+    {% endfor %}
+
+    <button type="submit">Check answers</button>
+</form>
+</body>
+</html>
