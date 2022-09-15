@@ -2,31 +2,68 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>Quiz {{ quiz.id }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiz: {{ quiz.name }}</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 </head>
 <body>
-    <h1>{{ quiz.name }}</h1>
+    <div class="container">
+    <h1>Quiz: {{ quiz.name }}</h1>
 
-    <form action="{% url 'quizzes:grade' question.id %}" method="post">
+    <section class="bg-warning" style="padding:12px">
+    <form id="question-form" action="{% url 'quizzes:grade_question' question.id %}" method="post">
         {% csrf_token %}
-    {% for question in quiz.question_set.all %}
-    <section>
-        <h3>{{ question.prompt }}</h3>
-        {% if question.freetextanswer %}
-        <input type="text" name="{{ question.pk }}">
-        {% else %}
-        {% for choice in question.multiplechoiceanswer.choices %}
-        <label>
-            <input type="radio" name="{{ question.pk }}" value="{{ choice }}">
-            {{ choice}}
-        </label>
-        {% endfor %}
-        {% endif %}
-    </section>
-    {% endfor %}
 
-    <button type="submit">Check answers</button>
-</form>
+        <fieldset class="form-group">
+            <legend>{{ question.prompt }}</legend>
+            {% if question.freetextanswer %}
+            <div class="form-group">
+            <label for="answer">
+            {% if question.freetextanswer.case_sensitive %}
+            Type your answer in (capitalization matters!):
+            {% else %}
+            Type your answer in (don't worry about capitalization):
+            {% endif %}
+            </label>
+            <input type="text" name="answer" class="form-control">
+            </div>
+            {% else %}
+            {% for choice in question.multiplechoiceanswer.choices %}
+            <div class="radio">
+            <label>
+                <input type="radio" name="answer" value="{{ choice }}">
+                {{ choice}}
+            </label>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Check answers</button>
+    </form>
+
+
+    <div id="question-feedback" style="margin-top:16px">
+    </div>
+
+    </section>
+
+    {% if next_question %}
+    <div style="margin-top:12px; font-size:16px">
+    <a href="{% url 'quizzes:display_question' quiz.id next_question.id %}">→ Next question</a>
+    </div>
+    {% endif %}
+    </div>
+
+    <script>
+    const form = document.getElementById("question-form");
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        fetch(form.action, {method:'post', body: new FormData(form)})
+            .then((response) => response.text())
+            .then(text => {
+                document.getElementById("question-feedback").innerHTML = text;
+            });
+    });
+    </script>
 </body>
 </html>

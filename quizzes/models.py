@@ -32,17 +32,6 @@ class Question(models.Model):
   def __str__(self):
     return self.prompt
 
-  def display(self):
-    print(self.prompt)
-    self.answer.display()
-    user_answer = input()
-    if self.answer.is_correct(user_answer):
-      print("You got it!")
-      self.answer_status = 'correct'
-    else:
-      print(f"Sorry, it was: {self.answer.correct_answer}")
-      self.answer_status = 'incorrect'
-
 class Answer(models.Model):
   question = models.OneToOneField(
         Question,
@@ -65,12 +54,6 @@ class FreeTextAnswer(Answer):
       return user_answer.lower() == self.correct_answer.lower()
     return user_answer == self.correct_answer
 
-  def display(self):
-    if self.case_sensitive:
-      print("Type your answer in (capitalization matters!):")
-    else:
-      print("Type your answer in (don't worry about capitalization):")
-
 class MultipleChoiceAnswer(Answer):
   choices = fields.ArrayField(models.CharField(max_length=200, blank=True))
 
@@ -78,19 +61,4 @@ class MultipleChoiceAnswer(Answer):
     return f"{self.correct_answer} from {self.choices}"
 
   def is_correct(self, user_answer):
-    """Assumes user answer is number corresponding to answer."""
-    return self.choices[int(user_answer) - 1] == self.correct_answer
-
-  def is_correct(self, user_answer):
-    self.user_answer = int(user_answer)
-    self.user_answer -= 1
-    correct_index = self.choices.index(self.correct_answer)
-    if self.user_answer == correct_index:
-      return True
-    else:
-      return False
-
-  def display(self):
-    print("Type the number corresponding to the correct answer.")
-    for i in range(0, len(self.choices)):
-      print(f"{i + 1}. {self.choices[i]}")
+    return user_answer == self.correct_answer
