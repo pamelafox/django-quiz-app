@@ -15,7 +15,7 @@ https://django-example-quizsite.azurewebsites.net/quizzes/
 Install the requirements:
 
 ```
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
 Create a local PostGreSQL database called "quizsite"

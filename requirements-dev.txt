@@ -1,0 +1,4 @@
+-r requirements.txt
+black==22.3.0
+pre-commit
+flake8

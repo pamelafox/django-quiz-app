@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'quizzes.apps.QuizzesConfig',
+    "quizzes.apps.QuizzesConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -79,10 +79,10 @@ WSGI_APPLICATION = "quizsite.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        'NAME': os.environ['DBNAME'],
-        'HOST': os.environ['DBHOST'],
-        'USER': os.environ['DBUSER'],
-        'PASSWORD': os.environ['DBPASS']
+        "NAME": os.environ["DBNAME"],
+        "HOST": os.environ["DBHOST"],
+        "USER": os.environ["DBUSER"],
+        "PASSWORD": os.environ["DBPASS"],
     }
 }
 
