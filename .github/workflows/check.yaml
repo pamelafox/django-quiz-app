@@ -36,6 +36,7 @@ jobs:
             options: "--check --verbose"
         - name: Run unit tests
           env:
+            DBUSER: postgres
             DBPASS: postgres
           run: |
             coverage run --source='.' manage.py test quizzes
