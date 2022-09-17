@@ -35,6 +35,8 @@ jobs:
             src: ". quizsite/ quizzes/"
             options: "--check --verbose"
         - name: Run unit tests
+          env:
+            DBPASS: postgres
           run: |
             coverage run --source='.' manage.py test quizzes
             coverage report
