@@ -11,6 +11,7 @@
     <h1>Quiz: {{ quiz.name }}</h1>
 
     <section class="bg-warning" style="padding:12px">
+    {% if question %}
     <form id="question-form" action="{% url 'quizzes:grade_question' question.id %}" method="post">
         {% csrf_token %}
 
@@ -41,10 +42,11 @@
         <button type="submit" class="btn btn-primary">Check answers</button>
     </form>
 
-
     <div id="question-feedback" style="margin-top:16px">
     </div>
-
+    {% else %}
+    Sorry, that question doesn't exist in this quiz.
+    {% endif %}
     </section>
 
     {% if next_question %}

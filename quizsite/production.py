@@ -1,4 +1,4 @@
-from .settings import * # noqa
+from .settings import *  # noqa
 import os
 
 # Configure the domain name using the environment variable

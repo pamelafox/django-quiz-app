@@ -1,13 +1,13 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
+from django.views import generic
 
 from .models import Quiz, Question
 
 
-def index(request):
-    quiz_list = Quiz.objects.all()
-    context = {"quiz_list": quiz_list}
-    return render(request, "quizzes/index.html", context)
+class IndexView(generic.ListView):
+    model = Quiz
+    template_name = "quizzes/index.html"
 
 
 def display_quiz(request, quiz_id):
@@ -26,6 +26,7 @@ def display_question(request, quiz_id, question_id):
             current_question = question
             if ind != len(questions) - 1:
                 next_question = questions[ind + 1]
+
     return render(
         request,
         "quizzes/display.html",

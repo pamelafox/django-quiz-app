@@ -6,22 +6,7 @@ class Quiz(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"<Quiz: {self.name}>"
-
-    def display(self):
-        # Display the quiz name
-        print(f"Welcome to the quiz on {self.name}!")
-        # Initialize the correct counter to 0
-        correct_count = 0
-        # Iterate through the questions
-        #  Display each question
-        #  Increment the correct counter accordingly
-        for question in self.questions:
-            question.display()
-            if question.answer_status == "correct":
-                correct_count += 1
-        # Print the ratio of correct/total
-        print(f"You got {correct_count}/{len(self.questions)} correct.")
+        return self.name
 
 
 class Question(models.Model):
