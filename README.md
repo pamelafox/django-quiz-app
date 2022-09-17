@@ -12,10 +12,11 @@ https://django-example-quizsite.azurewebsites.net/quizzes/
 
 ## Local development
 
-Install the requirements:
+Install the requirements and Git hooks:
 
 ```
 pip install -r requirements-dev.txt
+pre-commit install
 ```
 
 Create a local PostGreSQL database called "quizsite"
@@ -31,6 +32,13 @@ Run the local server:
 
 ```
 python manage.py runserver
+```
+
+Run tests:
+
+```
+coverage run --source='.' manage.py test quizzes
+coverage report
 ```
 
 ## Deployment

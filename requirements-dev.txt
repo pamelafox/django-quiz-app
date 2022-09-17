@@ -1,4 +1,5 @@
 -r requirements.txt
-black==22.3.0
+black
 pre-commit
 flake8
+coverage
