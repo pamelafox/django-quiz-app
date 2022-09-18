@@ -39,5 +39,6 @@ jobs:
             DBUSER: postgres
             DBPASS: postgres
           run: |
+            python manage.py collectstatic
             coverage run --source='.' manage.py test quizzes
             coverage report

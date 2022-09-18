@@ -37,6 +37,7 @@ python manage.py runserver
 Run tests:
 
 ```
+python manage.py collectstatic
 coverage run --source='.' manage.py test quizzes
 coverage report
 ```
