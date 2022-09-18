@@ -1,0 +1,8 @@
+body {
+    background: white url("images/papyrus.webp") repeat;
+}
+
+.question {
+    padding: 12px;
+    background-color: #f0f0f0;
+}
