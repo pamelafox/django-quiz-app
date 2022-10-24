@@ -46,13 +46,18 @@ coverage report
 
 ## Deployment
 
-The app is currently hosted on Microsoft Azure. Specifically:
+This repository is set up for deployment on Azure App Service (w/PostGreSQL flexible server) using the configuration files in the `infra` folder.
 
-* Azure App Service
-* Azure Database for PostGreSQL flexible server
+1. Sign up for a [free Azure account](https://azure.microsoft.com/free/?WT.mc_id=python-79461-pamelafox)
+2. Install the [Azure Dev CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd?WT.mc_id=python-79461-pamelafox). (If you open this repository in Codespaces or with the VS Code Dev Containers extension, that part will be done for you.)
+3. Provision and deploy all the resources:
 
-To deploy your own instance, follow the [tutorial for Django app + PostGreSQL deployment](https://docs.microsoft.com/en-us/azure/app-service/tutorial-python-postgresql-app?tabs=django%2Cwindows%2Cvscode-aztools%2Cterminal-bash%2Cazure-portal-access%2Cvscode-aztools-deploy%2Cdeploy-instructions-azportal%2Cdeploy-instructions--zip-azcli%2Cdeploy-instructions-curl-bash) but using this app instead of the sample app.
+```
+azd up
+```
 
-Make sure you specify the following environment variables in the App Service configuration: `SECRET_KEY`, `DBHOST`, `DBNAME`, `DBPASS`, `DBUSER`. The previously linked tutorial shows how to set these.
+4. To be able to access `/admin`, you'll need a Django superuser. Navigate to the Azure Portal for the App Service, select SSH, and run this command:
 
-TODO: az commands
+```
+python manage.py createsuperuser
+```
