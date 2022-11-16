@@ -51,7 +51,7 @@ This app comes with the built-in Django admin.
 python manage.py createsuperuser
 ```
 
-2. Restart the server and navigate to "/admin" 
+2. Restart the server and navigate to "/admin"
 
 3. Login with the superuser credentials.
 
