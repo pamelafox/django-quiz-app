@@ -16,25 +16,46 @@ https://django-example-quizsite.azurewebsites.net/quizzes/
 
 Install the requirements and Git hooks:
 
-```
-pip install -r requirements-dev.txt
-pre-commit install
+This project has devcontainer support, so you can open it in Github Codespaces or local VS Code with the Dev Containers extension. If you're unable to open the devcontainer,
+then it's best to first [create a Python virtual environment](https://docs.python.org/3/tutorial/venv.html#creating-virtual-environments) and activate that.
+
+1. Install the requirements:
+
+```shell
+pip install -r requirements.txt
 ```
 
-Create a local PostGreSQL database called "quizsite"
-and update `.env` with the relevant database details.
+2. Create an `.env` file using `.env.sample` as a guide. Set the value of `DBNAME` to the name of an existing database in your local PostgreSQL instance. Set the values of `DBHOST`, `DBUSER`, and `DBPASS` as appropriate for your local PostgreSQL instance. If you're in the devcontainer, copy the values from `.env.sample.devcontainer`.
 
-Run the migrations:
+3. Run the migrations:
 
 ```
 python manage.py migrate
 ```
 
-Run the local server:
+4. Run the local server:
 
 ```
 python manage.py runserver
 ```
+
+5. Navigate to "/quizzes" (since no "/" route is defined) to verify server is working.
+
+### Admin
+
+This app comes with the built-in Django admin.
+
+1. Create a superuser:
+
+```
+python manage.py createsuperuser
+```
+
+2. Restart the server and navigate to "/admin" 
+
+3. Login with the superuser credentials.
+
+### Testing
 
 Run tests:
 
@@ -43,6 +64,9 @@ python manage.py collectstatic
 coverage run --source='.' manage.py test quizzes
 coverage report
 ```
+
+The same tests are also run as a Github action.
+
 
 ## Deployment
 
