@@ -34,6 +34,7 @@ jobs:
             options: "--check --verbose"
         - name: Run unit tests
           env:
+            DBNAME: postgres
             DBUSER: postgres
             DBPASS: postgres
           run: |

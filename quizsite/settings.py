@@ -28,7 +28,8 @@ SECRET_KEY = "django-insecure-dfln3fbd4mq*jof)t5($@tlgn98z^a)ar7aw^py7s(j#w^x01q
 DEBUG = True
 
 CSRF_TRUSTED_ORIGINS = [
-    f"https://{os.getenv('CODESPACE_NAME')}-8000.{os.getenv('GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN')}"
+    "http://localhost:8000",
+    f"https://{os.getenv('CODESPACE_NAME')}-8000.{os.getenv('GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN')}",
 ]
 
 # Application definition
