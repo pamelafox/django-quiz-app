@@ -10,9 +10,8 @@ repos:
     hooks:
     -   id: black
         args: ['--config=./pyproject.toml']
--   repo: https://gitlab.com/pycqa/flake8
-    rev: 4.0.1
+-   repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.0.121
     hooks:
-    -   id: flake8
+    -   id: ruff
         exclude: '.venv/'
-        args: ['--config=.flake8']

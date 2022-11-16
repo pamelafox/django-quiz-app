@@ -1,5 +1,5 @@
 -r requirements.txt
 black
 pre-commit
-flake8
+ruff
 coverage
