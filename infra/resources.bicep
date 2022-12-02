@@ -92,7 +92,7 @@ resource web 'Microsoft.Web/sites@2022-03-01' = {
       alwaysOn: true
       linuxFxVersion: 'PYTHON|3.10'
       ftpsState: 'Disabled'
-      appCommandLine: 'python manage.py migrate'
+      appCommandLine: 'python manage.py migrate && gunicorn --workers 2 --threads 4 --timeout 60 --access-logfile \'-\' --error-logfile \'-\' --bind=0.0.0.0:8000 --chdir=/home/site/wwwroot quizsite.wsgi'
     }
     httpsOnly: true
   }
@@ -187,7 +187,7 @@ resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-pr
     administratorLoginPassword: databasePassword
     availabilityZone: '1'
     storage: {
-      storageSizeGB: 128
+      storageSizeGB: 32 
     }
     backup: {
       backupRetentionDays: 7
