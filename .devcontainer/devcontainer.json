@@ -1,16 +1,13 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.245.0/containers/python-3
 {
-	"name": "Python 3 & PostgreSQL",
+	"name": "django-quiz-app",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
 	"workspaceFolder": "/workspace",
 	"forwardPorts": [8000, 5432],
 
 	"features": {
-        "ghcr.io/devcontainers/features/azure-cli:1": {
-            "version": "latest"
-        },
 		"ghcr.io/devcontainers/features/github-cli:1": {
             "version": "latest"
         },
@@ -67,7 +64,6 @@
 			]
 		}
 	},
-
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "pip install -r requirements-dev.txt && pre-commit install",
