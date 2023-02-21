@@ -8,11 +8,8 @@
 	"forwardPorts": [8000, 5432],
 
 	"features": {
-		"ghcr.io/devcontainers/features/github-cli:1": {
+	"ghcr.io/devcontainers/features/github-cli:1": {
             "version": "latest"
-        },
-        "ghcr.io/devcontainers/features/python:1": {
-            "version": "os-provided"
         }
     },
 
