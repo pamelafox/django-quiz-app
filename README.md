@@ -22,7 +22,7 @@ then it's best to first [create a Python virtual environment](https://docs.pytho
 1. Install the requirements:
 
 ```shell
-pip install -r requirements.txt
+python3 -m pip install -r requirements-dev.txt
 ```
 
 2. Create an `.env` file using `.env.sample` as a guide. Set the value of `DBNAME` to the name of an existing database in your local PostgreSQL instance. Set the values of `DBHOST`, `DBUSER`, and `DBPASS` as appropriate for your local PostgreSQL instance. If you're in the devcontainer, copy the values exactly from `.env.sample`.
@@ -30,13 +30,13 @@ pip install -r requirements.txt
 3. Run the migrations:
 
 ```
-python manage.py migrate
+python3 manage.py migrate
 ```
 
 4. Run the local server:
 
 ```
-python manage.py runserver
+python3 manage.py runserver
 ```
 
 5. Navigate to "/quizzes" (since no "/" route is defined) to verify server is working.
@@ -48,7 +48,7 @@ This app comes with the built-in Django admin.
 1. Create a superuser:
 
 ```
-python manage.py createsuperuser
+python3 manage.py createsuperuser
 ```
 
 2. Restart the server and navigate to "/admin"
@@ -60,7 +60,7 @@ python manage.py createsuperuser
 Run tests:
 
 ```
-python manage.py collectstatic
+python3 manage.py collectstatic
 coverage run --source='.' manage.py test quizzes
 coverage report
 ```

@@ -1,5 +1,5 @@
-ARG VARIANT=3
-FROM --platform=amd64 mcr.microsoft.com/vscode/devcontainers/python:0-${VARIANT}
+ARG IMAGE=bullseye
+FROM --platform=amd64 mcr.microsoft.com/devcontainers/${IMAGE}
 
 RUN curl -fsSL https://aka.ms/install-azd.sh | bash
 

@@ -1,4 +1,4 @@
 Django==4.1.1
-psycopg2
-python-dotenv
-whitenoise[brotli]
+psycopg2==2.9.5
+python-dotenv==0.21.1
+whitenoise[brotli]==6.3.0
