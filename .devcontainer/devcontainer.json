@@ -6,13 +6,10 @@
 	"service": "app",
 	"workspaceFolder": "/workspace",
 	"forwardPorts": [8000, 5432],
-
-	"features": {
-	"ghcr.io/devcontainers/features/github-cli:1": {
-            "version": "latest"
-        }
-    },
-
+	"portsAttributes": {
+		"8000": {"label": "Django port", "onAutoForward": "notify"},
+		"5432": {"label": "PostgreSQL port", "onAutoForward": "silent"}
+	},
 	// Configure tool-specific properties.
 	"customizations": {
 		// Configure properties specific to VS Code.
@@ -56,15 +53,14 @@
 				"ms-azuretools.azure-dev",
 				"ms-python.python",
 				"ms-python.vscode-pylance",
+				"ms-azuretools.vscode-bicep",
 				"mtxr.sqltools",
 				"mtxr.sqltools-driver-pg"
 			]
 		}
 	},
-
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "pip install -r requirements-dev.txt && pre-commit install",
-
 	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode"
 }

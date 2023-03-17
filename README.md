@@ -6,12 +6,6 @@ An example Django app that serves quizzes and lets people know how they scored.
 Quizzes and their questions are stored in a PostGreSQL database.
 There is no user authentication or per-user data stored.
 
-Try it out at:
-
-```
-https://django-example-quizsite.azurewebsites.net/quizzes/
-```
-
 ## Local development
 
 Install the requirements and Git hooks:
