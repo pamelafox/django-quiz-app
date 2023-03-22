@@ -38,6 +38,7 @@ jobs:
             DBNAME: postgres
             DBUSER: postgres
             DBPASS: postgres
+            SECRET_KEY: django-insecure-key
           run: |
             python manage.py collectstatic
             coverage run --source='.' manage.py test quizzes
