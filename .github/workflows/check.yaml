@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:11
+        image: postgres:13
         env:
           POSTGRES_PASSWORD: postgres
         ports:
@@ -38,6 +38,7 @@ jobs:
             DBNAME: postgres
             DBUSER: postgres
             DBPASS: postgres
+            SECRET_KEY: django-insecure-key-${{ github.run_id }}-${{ github.run_attempt }}
           run: |
             python manage.py collectstatic
             coverage run --source='.' manage.py test quizzes
