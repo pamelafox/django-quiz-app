@@ -15,23 +15,29 @@ then it's best to first [create a Python virtual environment](https://docs.pytho
 
 1. Install the requirements:
 
-```shell
-python3 -m pip install -r requirements-dev.txt
-```
+    ```shell
+    python3 -m pip install -r requirements-dev.txt
+    ```
 
 2. Create an `.env` file using `.env.sample` as a guide. Set the value of `DBNAME` to the name of an existing database in your local PostgreSQL instance. Set the values of `DBHOST`, `DBUSER`, and `DBPASS` as appropriate for your local PostgreSQL instance. If you're in the devcontainer, copy the values exactly from `.env.sample`.
 
+3. Fill in a secret value for `SECRET_KEY`. You can use this command to generate an appropriate value.
+
+    ```shell
+    python -c 'import secrets; print(secrets.token_hex())'
+    ```
+
 3. Run the migrations:
 
-```
-python3 manage.py migrate
-```
+    ```
+    python3 manage.py migrate
+    ```
 
 4. Run the local server:
 
-```
-python3 manage.py runserver
-```
+    ```
+    python3 manage.py runserver
+    ```
 
 5. Navigate to "/quizzes" (since no "/" route is defined) to verify server is working.
 
@@ -79,3 +85,32 @@ azd up
 ```
 python manage.py createsuperuser
 ```
+
+## CI/CD pipeline
+
+This project includes a Github workflow for deploying the resources to Azure
+on every push to main. That workflow requires several Azure-related authentication secrets
+to be stored as Github action secrets. To set that up, run:
+
+```shell
+azd pipeline config
+```
+
+### Costs
+
+Pricing varies per region and usage, so it isn't possible to predict exact costs for your usage.
+
+You can try the Azure pricing calculator for the resources:
+
+- Azure App Service: Basic Tier with 1 CPU core, 1.75GB RAM. Pricing is hourly. [Pricing](https://azure.microsoft.com/pricing/details/app-service/linux/)
+- PostgreSQL Flexible Server: Burstable Tier with 1 CPU core, 32GB storage. Pricing is hourly. [Pricing](https://azure.microsoft.com/pricing/details/postgresql/flexible-server/)
+- Virtual Network: Pricing based on data transfer. [Pricing](https://azure.microsoft.com/en-us/pricing/details/virtual-network/)
+- Private DNS Zone: Pricing based on number of zones per region per month. [Pricing](https://azure.microsoft.com/en-in/pricing/details/dns/)
+- Log analytics: Pay-as-you-go tier. Costs based on data ingested. [Pricing](https://azure.microsoft.com/pricing/details/monitor/)
+
+⚠️ To avoid unnecessary costs, remember to take down your app if it's no longer in use,
+either by deleting the resource group in the Portal or running `azd down`.
+
+## Getting help
+
+If you're working with this project and running into issues, please post in **Discussions**.
