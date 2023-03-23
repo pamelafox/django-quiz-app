@@ -121,6 +121,7 @@ This infrastructure uses the following mechanisms to secure the PostgreSQL datab
 * Admin Username: Unique string generated based on subscription ID and stored in Key Vault.
 * Admin Password: Randomly generated and stored in Key Vault.
 * PostgreSQL Version: Latest available on Azure, version 14, which includes security improvements.
+* Django Admin Interface: The URL (typically "/admin") is a unique string generated based on the App Service Plan ID.
 
 ⚠️ For even more security, consider using an Azure Virtual Network to connect the Web App to the Database.
 See [the Django-on-Azure project](https://github.com/tonybaloney/django-on-azure) for example infrastructure files.
