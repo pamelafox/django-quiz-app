@@ -100,6 +100,15 @@ module appServicePlan 'core/host/appserviceplan.bicep' = {
   }
 }
 
+module webKeyVaultAccess 'core/security/keyvault-access.bicep' = {
+  name: 'web-keyvault-access'
+  scope: resourceGroup
+  params: {
+    keyVaultName: keyVault.outputs.name
+    principalId: web.outputs.identityPrincipalId
+  }
+}
+
 // Store secrets in a keyvault
 module keyVault './core/security/keyvault.bicep' = {
   name: 'keyvault'

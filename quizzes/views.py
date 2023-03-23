@@ -1,8 +1,8 @@
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import generic
 
-from .models import Quiz, Question
+from .models import Question, Quiz
 
 
 class IndexView(generic.ListView):
