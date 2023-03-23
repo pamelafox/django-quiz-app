@@ -4,20 +4,19 @@ param tags object = {}
 
 param sku object
 param storage object
-param delegatedSubnetResourceId string = ''
-param privateDnsZoneArmResourceId string = ''
-param privateDnsZoneLink object = {}
-
-param databaseName string
 param administratorLogin string
 @secure()
 param administratorLoginPassword string
+param databaseNames array = []
+param allowAzureIPsFirewall bool = false
+param allowAllIPsFirewall bool = false
+param allowedSingleIPs array = []
 
 // PostgreSQL version
-@allowed(['11', '12', '13', '14', '15'])
 param version string
 
-resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-preview' = {
+// Latest official version 2022-12-01 does not have Bicep types available
+resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' = {
   location: location
   tags: tags
   name: name
@@ -27,25 +26,39 @@ resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-pr
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorLoginPassword
     storage: storage
-    network: union(
-      !empty(delegatedSubnetResourceId) ? { delegatedSubnetResourceId: delegatedSubnetResourceId } : {},
-      !empty(privateDnsZoneArmResourceId) ? {privateDnsZoneArmResourceId: privateDnsZoneArmResourceId } : {})
     highAvailability: {
       mode: 'Disabled'
     }
   }
 
-  resource database 'databases' = {
-    name: databaseName
+  resource database 'databases' = [for name in databaseNames: {
+    name: name
+  }]
+
+  resource firewall_all 'firewallRules' = if (allowAllIPsFirewall) {
+    name: 'allow-all-IPs'
+    properties: {
+        startIpAddress: '0.0.0.0'
+        endIpAddress: '255.255.255.255'
+    }
   }
 
-  resource firewall 'firewallRules' = {
-    name: 'AllowAllWindowsAzureIps'
+  resource firewall_azure 'firewallRules' = if (allowAzureIPsFirewall) {
+    name: 'allow-all-azure-internal-IPs'
     properties: {
         startIpAddress: '0.0.0.0'
         endIpAddress: '0.0.0.0'
     }
   }
 
-  dependsOn: empty(privateDnsZoneLink) ? [] : [privateDnsZoneLink]
+  resource firewall_single 'firewallRules' = [for ip in allowedSingleIPs: {
+    name: 'allow-single-${replace(ip, '.', '')}'
+    properties: {
+        startIpAddress: ip
+        endIpAddress: ip
+    }
+  }]
+
 }
+
+output POSTGRES_DOMAIN_NAME string = postgresServer.properties.fullyQualifiedDomainName

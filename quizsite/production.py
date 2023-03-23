@@ -6,6 +6,7 @@ import os
 ALLOWED_HOSTS = [os.environ["WEBSITE_HOSTNAME"]] if "WEBSITE_HOSTNAME" in os.environ else []
 CSRF_TRUSTED_ORIGINS = ["https://" + os.environ["WEBSITE_HOSTNAME"]] if "WEBSITE_HOSTNAME" in os.environ else []
 DEBUG = False
+ADMIN_URL = os.environ["ADMIN_URL"]
 
 # DBHOST is only the server name, not the full URL
 hostname = os.environ["DBHOST"]
@@ -19,5 +20,6 @@ DATABASES = {
         "HOST": hostname + ".postgres.database.azure.com",
         "USER": os.environ["DBUSER"],
         "PASSWORD": os.environ["DBPASS"],
+        "OPTIONS": {"sslmode": "require"},
     }
 }

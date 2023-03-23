@@ -2,26 +2,42 @@
 
 # Quizzes app
 
-An example Django app that serves quizzes and lets people know how they scored.
-Quizzes and their questions are stored in a PostGreSQL database.
-There is no user authentication or per-user data stored.
+An example Django app that serves quizzes and lets people know how they scored. Quizzes and their questions are stored in a PostgreSQL database. There is no user authentication or per-user data stored.
 
-## Local development
+![Screenshot of Quiz page with question](readme_screenshot.png)
 
-Install the requirements and Git hooks:
+The project is designed for deployment on Azure App Service with a PostgreSQL flexible server. See deployment instructions below.
 
-This project has devcontainer support, so you can open it in Github Codespaces or local VS Code with the Dev Containers extension. If you're unable to open the devcontainer,
-then it's best to first [create a Python virtual environment](https://docs.python.org/3/tutorial/venv.html#creating-virtual-environments) and activate that.
+![Diagram of the Architecture: App Service, PostgreSQL server, Key Vault, Log analytics](readme_diagram.png)
 
-1. Install the requirements:
+The code is tested with `django.test`, linted with [ruff](https://github.com/charliermarsh/ruff), and formatted with [black](https://black.readthedocs.io/en/stable/). Code quality issues are all checked with both [pre-commit](https://pre-commit.com/) and Github actions.
+
+## Opening the project
+
+This project has [Dev Container support](https://code.visualstudio.com/docs/devcontainers/containers), so it will be be setup automatically if you open it in Github Codespaces or in local VS Code with the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
+
+If you're not using one of those options for opening the project, then you'll need to:
+
+1. Create a [Python virtual environment](https://docs.python.org/3/tutorial/venv.html#creating-virtual-environments) and activate it.
+
+2. Install the requirements:
 
     ```shell
     python3 -m pip install -r requirements-dev.txt
     ```
 
-2. Create an `.env` file using `.env.sample` as a guide. Set the value of `DBNAME` to the name of an existing database in your local PostgreSQL instance. Set the values of `DBHOST`, `DBUSER`, and `DBPASS` as appropriate for your local PostgreSQL instance. If you're in the devcontainer, copy the values exactly from `.env.sample`.
+3. Install the pre-commit hooks:
 
-3. Fill in a secret value for `SECRET_KEY`. You can use this command to generate an appropriate value.
+    ```shell
+    pre-commit install
+    ```
+
+## Local development
+
+
+1. Create an `.env` file using `.env.sample` as a guide. Set the value of `DBNAME` to the name of an existing database in your local PostgreSQL instance. Set the values of `DBHOST`, `DBUSER`, and `DBPASS` as appropriate for your local PostgreSQL instance. If you're in the devcontainer, copy the values exactly from `.env.sample`.
+
+2. Fill in a secret value for `SECRET_KEY`. You can use this command to generate an appropriate value.
 
     ```shell
     python -c 'import secrets; print(secrets.token_hex())'
@@ -39,11 +55,11 @@ then it's best to first [create a Python virtual environment](https://docs.pytho
     python3 manage.py runserver
     ```
 
-5. Navigate to "/quizzes" (since no "/" route is defined) to verify server is working.
+5. Navigate to the displayed URL to verify the website is working.
 
 ### Admin
 
-This app comes with the built-in Django admin.
+This app comes with the built-in Django admin interface.
 
 1. Create a superuser:
 
@@ -86,7 +102,7 @@ azd up
 python manage.py createsuperuser
 ```
 
-## CI/CD pipeline
+### CI/CD pipeline
 
 This project includes a Github workflow for deploying the resources to Azure
 on every push to main. That workflow requires several Azure-related authentication secrets
@@ -96,20 +112,33 @@ to be stored as Github action secrets. To set that up, run:
 azd pipeline config
 ```
 
+## Security
+
+It is important to secure the databases in web applications to prevent unwanted data access.
+This infrastructure uses the following mechanisms to secure the PostgreSQL database:
+
+* Azure Firewall: The database is accessible only from other Azure IPs, not from public IPs. (Note that includes other customers using Azure).
+* Admin Username: Unique string generated based on subscription ID and stored in Key Vault.
+* Admin Password: Randomly generated and stored in Key Vault.
+* PostgreSQL Version: Latest available on Azure, version 14, which includes security improvements.
+
+⚠️ For even more security, consider using an Azure Virtual Network to connect the Web App to the Database.
+See [the Django-on-Azure project](https://github.com/tonybaloney/django-on-azure) for example infrastructure files.
+
 ### Costs
 
 Pricing varies per region and usage, so it isn't possible to predict exact costs for your usage.
 
-You can try the Azure pricing calculator for the resources:
+You can try the [Azure pricing calculator](https://azure.com/e/560b5f259111424daa7eb23c6848d164) for the resources:
 
 - Azure App Service: Basic Tier with 1 CPU core, 1.75GB RAM. Pricing is hourly. [Pricing](https://azure.microsoft.com/pricing/details/app-service/linux/)
 - PostgreSQL Flexible Server: Burstable Tier with 1 CPU core, 32GB storage. Pricing is hourly. [Pricing](https://azure.microsoft.com/pricing/details/postgresql/flexible-server/)
-- Virtual Network: Pricing based on data transfer. [Pricing](https://azure.microsoft.com/en-us/pricing/details/virtual-network/)
-- Private DNS Zone: Pricing based on number of zones per region per month. [Pricing](https://azure.microsoft.com/en-in/pricing/details/dns/)
+- Key Vault: Standard tier. Costs are per transaction, a few transactions are used on each deploy. [Pricing](https://azure.microsoft.com/pricing/details/key-vault/)
 - Log analytics: Pay-as-you-go tier. Costs based on data ingested. [Pricing](https://azure.microsoft.com/pricing/details/monitor/)
 
 ⚠️ To avoid unnecessary costs, remember to take down your app if it's no longer in use,
 either by deleting the resource group in the Portal or running `azd down`.
+
 
 ## Getting help
 

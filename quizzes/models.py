@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.postgres import fields
+from django.db import models
 
 
 class Quiz(models.Model):

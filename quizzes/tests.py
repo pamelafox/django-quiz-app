@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import Quiz, Question, FreeTextAnswer, MultipleChoiceAnswer
+from .models import FreeTextAnswer, MultipleChoiceAnswer, Question, Quiz
 
 
 def create_quiz():

@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Quiz, Question, FreeTextAnswer, MultipleChoiceAnswer
+
+from .models import FreeTextAnswer, MultipleChoiceAnswer, Question, Quiz
 
 admin.site.register(Quiz)
 
