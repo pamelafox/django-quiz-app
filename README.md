@@ -2,9 +2,15 @@
 
 # Quizzes app
 
-An example Django app that serves quizzes and lets people know how they scored.
-Quizzes and their questions are stored in a PostgreSQL database.
-There is no user authentication or per-user data stored.
+An example Django app that serves quizzes and lets people know how they scored. Quizzes and their questions are stored in a PostgreSQL database. There is no user authentication or per-user data stored.
+
+![Screenshot of Quiz page with question](readme_screenshot.png)
+
+The project is designed for deployment on Azure App Service with a PostgreSQL flexible server. See deployment instructions below.
+
+![Diagram of the Architecture: App Service, PostgreSQL server, Key Vault, Log analytics](readme_diagram.png)
+
+The code is tested with `django.test`, linted with [ruff](https://github.com/charliermarsh/ruff), and formatted with [black](https://black.readthedocs.io/en/stable/). Code quality issues are all checked with both [pre-commit](https://pre-commit.com/) and Github actions.
 
 ## Opening the project
 
@@ -49,7 +55,7 @@ If you're not using one of those options for opening the project, then you'll ne
     python3 manage.py runserver
     ```
 
-5. Navigate to "/quizzes" (since no "/" route is defined) to verify server is working.
+5. Navigate to the displayed URL to verify the website is working.
 
 ### Admin
 
