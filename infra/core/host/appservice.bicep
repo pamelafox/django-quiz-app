@@ -33,10 +33,7 @@ param numberOfWorkers int = -1
 param scmDoBuildDuringDeployment bool = false
 param use32BitWorkerProcess bool = false
 param ftpsState string = 'FtpsOnly'
-
-// Microsoft.Web/sites/networkConfig
-param subnetResourceId string = ''
-param virtualNetwork object
+param healthCheckPath string = ''
 
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
   name: name
@@ -49,11 +46,13 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
       linuxFxVersion: linuxFxVersion
       alwaysOn: alwaysOn
       ftpsState: ftpsState
+      minTlsVersion: '1.2'
       appCommandLine: appCommandLine
       numberOfWorkers: numberOfWorkers != -1 ? numberOfWorkers : null
       minimumElasticInstanceCount: minimumElasticInstanceCount != -1 ? minimumElasticInstanceCount : null
       use32BitWorkerProcess: use32BitWorkerProcess
       functionAppScaleLimit: functionAppScaleLimit != -1 ? functionAppScaleLimit : null
+      healthCheckPath: healthCheckPath
       cors: {
         allowedOrigins: union([ 'https://portal.azure.com', 'https://ms.portal.azure.com' ], allowedOrigins)
       }
@@ -87,15 +86,6 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
       configAppSettings
     ]
   }
-
-  resource webappVnetConfig 'networkConfig' =  if (!(empty(virtualNetwork))) {
-    name: 'virtualNetwork'
-    properties: {
-      subnetResourceId: subnetResourceId
-    }
-  }
-
-  dependsOn: empty(virtualNetwork) ? [] : [virtualNetwork]
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (!(empty(keyVaultName))) {

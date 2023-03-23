@@ -8,8 +8,17 @@
       "location": {
         "value": "${AZURE_LOCATION}"
       },
-      "databasePassword": {
-        "value": "$(secretOrRandomPassword ${AZURE_KEY_VAULT_NAME} databasePassword)"
+      "principalId": {
+        "value": "${AZURE_PRINCIPAL_ID}"
+      },
+      "postgresAdminUser": {
+        "value": "$(secretOrRandomPassword ${AZURE_KEY_VAULT_NAME} postgresAdminUser)"
+      },
+      "postgresAdminPassword": {
+        "value": "$(secretOrRandomPassword ${AZURE_KEY_VAULT_NAME} postgresAdminPassword)"
+      },
+      "djangoSecretKey": {
+        "value": "$(secretOrRandomPassword ${AZURE_KEY_VAULT_NAME} djangoSecretKey)"
       }
     }
   }

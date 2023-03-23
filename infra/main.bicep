@@ -10,8 +10,19 @@ param name string
 param location string
 
 @secure()
+@description('PostGreSQL Server administrator username')
+param postgresAdminUser string
+
+@secure()
 @description('PostGreSQL Server administrator password')
-param databasePassword string
+param postgresAdminPassword string
+
+@description('Id of the user or app to assign application roles')
+param principalId string = ''
+
+@secure()
+@description('Django SECRET_KEY for cryptographic signing')
+param djangoSecretKey string
 
 var resourceToken = toLower(uniqueString(subscription().id, name, location))
 var tags = { 'azd-env-name': name }
@@ -26,19 +37,7 @@ var prefix = '${name}-${resourceToken}'
 
 var postgresServerName = '${prefix}-postgresql'
 
-module virtualNetwork 'core/security/virtualnetwork.bicep' = {
-  name: 'virtualnetwork'
-  scope: resourceGroup
-  params: {
-    name: '${prefix}-vnet'
-    location: location
-    tags: tags
-    postgresServerName: postgresServerName
-  }
-}
-
-var databaseName = 'django'
-var databaseUser = 'django'
+var postgresDatabaseName = 'django'
 
 module postgresServer 'core/database/postgresql/flexibleserver.bicep' = {
   name: 'postgresql'
@@ -54,13 +53,11 @@ module postgresServer 'core/database/postgresql/flexibleserver.bicep' = {
     storage: {
       storageSizeGB: 32
     }
-    version: '13'
-    administratorLogin: databaseUser
-    administratorLoginPassword: databasePassword
-    databaseName: databaseName
-    delegatedSubnetResourceId: virtualNetwork.outputs.databaseSubnetId
-    privateDnsZoneArmResourceId: virtualNetwork.outputs.privateDnsZoneId
-    privateDnsZoneLink: virtualNetwork.outputs.privateDnsZoneLink
+    version: '14'
+    administratorLogin: postgresAdminUser
+    administratorLoginPassword: postgresAdminPassword
+    databaseNames: [postgresDatabaseName]
+    allowAzureIPsFirewall: true
   }
 }
 
@@ -78,13 +75,12 @@ module web 'core/host/appservice.bicep' = {
     ftpsState: 'Disabled'
     managedIdentity: true
     appCommandLine: 'python manage.py migrate && gunicorn --workers 2 --threads 4 --timeout 60 --access-logfile \'-\' --error-logfile \'-\' --bind=0.0.0.0:8000 --chdir=/home/site/wwwroot quizsite.wsgi'
-    virtualNetwork: virtualNetwork
-    subnetResourceId: virtualNetwork.outputs.webSubnetId
     appSettings: {
       DBHOST: postgresServerName
-      DBNAME: databaseName
-      DBUSER: databaseUser
-      DBPASS: databasePassword
+      DBNAME: postgresDatabaseName
+      DBUSER: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=postgresAdminUser)'
+      DBPASS: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=postgresAdminPassword)'
+      SECRET_KEY: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=djangoSecretKey)'
     }
   }
 }
@@ -103,6 +99,45 @@ module appServicePlan 'core/host/appserviceplan.bicep' = {
     reserved: true
   }
 }
+
+// Store secrets in a keyvault
+module keyVault './core/security/keyvault.bicep' = {
+  name: 'keyvault'
+  scope: resourceGroup
+  params: {
+    name: '${take(replace(prefix, '-', ''), 17)}-vault'
+    location: location
+    tags: tags
+    principalId: principalId
+  }
+}
+
+var secrets = [
+  {
+    name: 'djangoSecretKey'
+    value: djangoSecretKey
+  }
+  {
+    name: 'postgresAdminUser'
+    value: postgresAdminUser
+  }
+  {
+    name: 'postgresAdminPassword'
+    value: postgresAdminPassword
+  }
+]
+
+@batchSize(1)
+module keyVaultSecrets './core/security/keyvault-secret.bicep' = [for secret in secrets: {
+  name: 'keyvault-secret-${secret.name}'
+  scope: resourceGroup
+  params: {
+    keyVaultName: keyVault.outputs.name
+    name: secret.name
+    secretValue: secret.value
+  }
+}]
+
 
 module logAnalyticsWorkspace 'core/monitor/loganalytics.bicep' = {
   name: 'loganalytics'
