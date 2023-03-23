@@ -26,6 +26,8 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+ADMIN_URL = "admin/"
+
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
     f"https://{os.getenv('CODESPACE_NAME')}-8000.{os.getenv('GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN')}",

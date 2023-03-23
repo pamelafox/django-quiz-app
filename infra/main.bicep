@@ -76,6 +76,7 @@ module web 'core/host/appservice.bicep' = {
     managedIdentity: true
     appCommandLine: 'python manage.py migrate && gunicorn --workers 2 --threads 4 --timeout 60 --access-logfile \'-\' --error-logfile \'-\' --bind=0.0.0.0:8000 --chdir=/home/site/wwwroot quizsite.wsgi'
     appSettings: {
+      ADMIN_URL: 'admin${uniqueString(appServicePlan.outputs.id)}'
       DBHOST: postgresServerName
       DBNAME: postgresDatabaseName
       DBUSER: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=postgresAdminUser)'
