@@ -112,7 +112,7 @@ It is important to secure the databases in web applications to prevent unwanted 
 This infrastructure uses the following mechanisms to secure the PostgreSQL database:
 
 * Azure Firewall: The database is accessible only from other Azure IPs, not from public IPs. (Note that includes other customers using Azure).
-* Admin Username: Randomly generated and stored in Key Vault.
+* Admin Username: Unique string generated based on subscription ID and stored in Key Vault.
 * Admin Password: Randomly generated and stored in Key Vault.
 * PostgreSQL Version: Latest available on Azure, version 14, which includes security improvements.
 

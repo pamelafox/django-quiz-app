@@ -11,7 +11,7 @@ param location string
 
 @secure()
 @description('PostGreSQL Server administrator username')
-param postgresAdminUser string
+param postgresAdminUser string = 'admin${uniqueString(subscription().subscriptionId)}'
 
 @secure()
 @description('PostGreSQL Server administrator password')
