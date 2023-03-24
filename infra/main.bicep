@@ -11,7 +11,7 @@ param location string
 
 @secure()
 @description('PostGreSQL Server administrator username')
-param postgresAdminUser string = 'admin${uniqueString(subscription().subscriptionId)}'
+param postgresAdminUser string
 
 @secure()
 @description('PostGreSQL Server administrator password')
@@ -163,3 +163,4 @@ module logAnalyticsWorkspace 'core/monitor/loganalytics.bicep' = {
 
 output WEB_URI string = 'https://${web.outputs.uri}'
 output AZURE_LOCATION string = location
+output AZURE_KEY_VAULT_NAME string = keyVault.outputs.name
