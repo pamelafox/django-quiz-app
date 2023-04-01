@@ -86,21 +86,37 @@ The same tests are also run as a Github action.
 
 ## Deployment
 
-This repository is set up for deployment on Azure App Service (w/PostGreSQL flexible server) using the configuration files in the `infra` folder.
+This repository is set up for deployment on Azure App Service (w/PostgreSQL flexible server) using the configuration files in the `infra` folder.
 
-1. Sign up for a [free Azure account](https://azure.microsoft.com/free/?WT.mc_id=python-79461-pamelafox)
-2. Install the [Azure Dev CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd?WT.mc_id=python-79461-pamelafox). (If you open this repository in Codespaces or with the VS Code Dev Containers extension, that part will be done for you.)
-3. Provision and deploy all the resources:
+1. Sign up for a [free Azure account](https://azure.microsoft.com/free/)
+2. Install the [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd). (If you open this repository in Codespaces or with the VS Code Dev Containers extension, that part will be done for you.)
+3. Initialize a new `azd` environment:
 
-```
-azd up
-```
+    ```shell
+    azd init
+    ```
 
-4. To be able to access `/admin`, you'll need a Django superuser. Navigate to the Azure Portal for the App Service, select SSH, and run this command:
+    It will prompt you to provide a name (like "django-app") that will later be used in the name of the deployed resources.
 
-```
-python manage.py createsuperuser
-```
+4. Provision and deploy all the resources:
+
+    ```shell
+    azd up
+    ```
+
+    It will prompt you to login, pick a subscription, and provide a location (like "eastus"). Then it will provision the resources in your account and deploy the latest code. If you get an error with deployment, changing the location (like to "centralus") can help, as there may be availability constraints for some of the resources.
+
+5. To be able to access `/admin`, you'll need a Django superuser. Navigate to the Azure Portal for the App Service, select SSH, and run this command:
+
+    ```
+    python manage.py createsuperuser
+    ```
+
+6. When you've made any changes to the app code, you can just run:
+
+    ```shell
+    azd deploy
+    ```
 
 ### CI/CD pipeline
 
