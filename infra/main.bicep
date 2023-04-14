@@ -10,10 +10,6 @@ param name string
 param location string
 
 @secure()
-@description('PostGreSQL Server administrator username')
-param postgresAdminUser string
-
-@secure()
 @description('PostGreSQL Server administrator password')
 param postgresAdminPassword string
 
@@ -23,6 +19,7 @@ param principalId string = ''
 @secure()
 @description('Django SECRET_KEY for cryptographic signing')
 param djangoSecretKey string
+
 
 var resourceToken = toLower(uniqueString(subscription().id, name, location))
 var tags = { 'azd-env-name': name }
@@ -36,7 +33,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 var prefix = '${name}-${resourceToken}'
 
 var postgresServerName = '${prefix}-postgresql'
-
+var postgresAdminUser = 'admin${uniqueString(resourceGroup.id)}'
 var postgresDatabaseName = 'django'
 
 module postgresServer 'core/database/postgresql/flexibleserver.bicep' = {
