@@ -48,13 +48,13 @@ If you're not using one of those options for opening the project, then you'll ne
 3. Run the migrations:
 
     ```
-    python3 manage.py migrate
+    python3 src/manage.py migrate
     ```
 
-4. Run the local server:
+4. Run the local server at port 8000:
 
     ```
-    python3 manage.py runserver
+    python3 src/manage.py runserver 8000
     ```
 
 5. Navigate to the displayed URL to verify the website is working.
@@ -78,8 +78,8 @@ python3 manage.py createsuperuser
 Run tests:
 
 ```
-python3 manage.py collectstatic
-coverage run --source='.' manage.py test quizzes
+python3 src/manage.py collectstatic
+coverage run --source='.' src/manage.py test quizzes
 coverage report
 ```
 
@@ -90,7 +90,7 @@ The same tests are also run as a Github action.
 
 This repository is set up for deployment on Azure App Service (w/PostgreSQL flexible server) using the configuration files in the `infra` folder.
 
-1. Sign up for a [free Azure account](https://azure.microsoft.com/free/)
+1. Sign up for a [free Azure account](https://azure.microsoft.com/free/) and create an Azure Subscription.
 2. Install the [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd). (If you open this repository in Codespaces or with the VS Code Dev Containers extension, that part will be done for you.)
 3. Login to Azure:
 
