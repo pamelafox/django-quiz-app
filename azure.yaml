@@ -5,6 +5,6 @@ metadata:
   template: django-quiz-app@0.0.1-beta
 services:
   web:
-    project: .
+    project: ./src
     language: py
     host: appservice
