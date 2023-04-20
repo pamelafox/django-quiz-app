@@ -20,7 +20,6 @@ param principalId string = ''
 @description('Django SECRET_KEY for cryptographic signing')
 param djangoSecretKey string
 
-
 var resourceToken = toLower(uniqueString(subscription().id, name, location))
 var tags = { 'azd-env-name': name }
 
@@ -53,7 +52,7 @@ module postgresServer 'core/database/postgresql/flexibleserver.bicep' = {
     version: '14'
     administratorLogin: postgresAdminUser
     administratorLoginPassword: postgresAdminPassword
-    databaseNames: [postgresDatabaseName]
+    databaseNames: [ postgresDatabaseName ]
     allowAzureIPsFirewall: true
   }
 }
@@ -82,7 +81,6 @@ module web 'core/host/appservice.bicep' = {
     }
   }
 }
-
 
 module appServicePlan 'core/host/appserviceplan.bicep' = {
   name: 'serviceplan'
@@ -145,7 +143,6 @@ module keyVaultSecrets './core/security/keyvault-secret.bicep' = [for secret in 
   }
 }]
 
-
 module logAnalyticsWorkspace 'core/monitor/loganalytics.bicep' = {
   name: 'loganalytics'
   scope: resourceGroup
@@ -155,8 +152,6 @@ module logAnalyticsWorkspace 'core/monitor/loganalytics.bicep' = {
     tags: tags
   }
 }
-
-
 
 output WEB_URI string = 'https://${web.outputs.uri}'
 output AZURE_LOCATION string = location
