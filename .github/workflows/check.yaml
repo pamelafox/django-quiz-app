@@ -25,12 +25,11 @@ jobs:
             pip install -r requirements-dev.txt
         - name: Lint with ruff
           run: |
-            ruff quizsite/
-            ruff quizzes/
+            ruff .
         - name: Check formatting with black
           uses: psf/black@stable
           with:
-            src: ". quizsite/ quizzes/"
+            src: ""
             options: "--check --verbose"
         - name: Run unit tests
           env:
@@ -40,6 +39,6 @@ jobs:
             DBPASS: postgres
             SECRET_KEY: django-insecure-key-${{ github.run_id }}-${{ github.run_attempt }}
           run: |
-            python manage.py collectstatic
-            coverage run --source='.' manage.py test quizzes
+            python src/manage.py collectstatic
+            coverage run --source='.' src/manage.py test quizzes
             coverage report
