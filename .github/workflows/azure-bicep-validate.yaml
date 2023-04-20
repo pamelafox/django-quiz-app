@@ -1,4 +1,4 @@
-name: Validate bicep scripts
+name: Bicep scripts
 on:
   workflow_dispatch:
   push:
