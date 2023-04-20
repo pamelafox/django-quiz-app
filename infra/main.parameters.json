@@ -11,9 +11,6 @@
       "principalId": {
         "value": "${AZURE_PRINCIPAL_ID}"
       },
-      "postgresAdminUser": {
-        "value": "$(secretOrRandomPassword ${AZURE_KEY_VAULT_NAME} postgresAdminUser)"
-      },
       "postgresAdminPassword": {
         "value": "$(secretOrRandomPassword ${AZURE_KEY_VAULT_NAME} postgresAdminPassword)"
       },
