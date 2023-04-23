@@ -1,0 +1,60 @@
+[
+{
+  "model": "quizzes.quiz",
+  "pk": 1,
+  "fields": {
+    "name": "Python Trivia"
+  }
+},
+{
+  "model": "quizzes.question",
+  "pk": 1,
+  "fields": {
+    "quiz": 1,
+    "prompt": "Who invented Python?"
+  }
+},
+{
+  "model": "quizzes.question",
+  "pk": 2,
+  "fields": {
+    "quiz": 1,
+    "prompt": "When was the first version of Python released?"
+  }
+},
+{
+  "model": "quizzes.question",
+  "pk": 3,
+  "fields": {
+    "quiz": 1,
+    "prompt": "What's the latest version of Python released?"
+  }
+},
+{
+  "model": "quizzes.multiplechoiceanswer",
+  "pk": 1,
+  "fields": {
+    "question": 1,
+    "correct_answer": "Guido van Rossum",
+    "choices": "[\"Guido van Rossum\", \"Ada Lovelace\", \"Rob Pike\", \"Kathleen Booth\"]"
+  }
+},
+{
+  "model": "quizzes.multiplechoiceanswer",
+  "pk": 2,
+  "fields": {
+    "question": 2,
+    "correct_answer": "1991",
+    "choices": "[\"1971\", \"1981\", \"1991\", \"2001\", \"2011\"]"
+  }
+},
+{
+  "model": "quizzes.multiplechoiceanswer",
+  "pk": 3,
+  "fields": {
+    "question": 3,
+    "correct_answer": "3.11",
+    "choices": "[\"3.6\", \"3.7\", \"3.8\", \"3.9\", \"3.10\", \"3.11\"]"
+  }
+}
+]
