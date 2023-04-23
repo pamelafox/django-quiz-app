@@ -1,4 +1,0 @@
-{
-    "appService.defaultWebAppToDeploy": "/subscriptions/74feb6f3-f646-478d-a99b-37fafee75e29/microsoft.web/sites/subscriptions/74feb6f3-f646-478d-a99b-37fafee75e29/resourceGroups/django-example-quizsite/providers/Microsoft.Web/sites/django-example-quizsite",
-    "appService.deploySubpath": "."
-}

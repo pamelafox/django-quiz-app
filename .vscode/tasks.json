@@ -1,0 +1,58 @@
+{
+    "version": "2.0.0",
+    "tasks": [{
+      "label": "Open Django shell",
+      "type": "shell",
+      "command": "./src/manage.py shell",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    }, {
+      "label": "Create super user",
+      "type": "shell",
+      "command": "./src/manage.py createsuperuser",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    }, {
+      "label": "Run Django tests",
+      "type": "shell",
+      "command": "./src/manage.py test",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    }, {
+      "label": "Make migrations",
+      "type": "shell",
+      "command": "./src/manage.py makemigrations",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    }, {
+      "label": "Run migrations",
+      "type": "shell",
+      "command": "./src/manage.py migrate",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    }, {
+      "label": "Load seed data",
+      "type": "shell",
+      "command": "./src/manage.py loaddata seed_data.json",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    }]
+  }
