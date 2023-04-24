@@ -22,7 +22,6 @@ env = environ.Env(
     DBSSL=(str, "disable"),
     ADMIN_URL=(str, "admin/"),
     STATIC_BACKEND=(str, "django.contrib.staticfiles.storage.StaticFilesStorage"),
-    WHITENOISE_MANIFEST_STRICT=(bool, False),
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -160,8 +159,6 @@ STORAGES = {
     },
 }
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
-WHITENOISE_MANIFEST_STRICT = env("WHITENOISE_MANIFEST_STRICT")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
