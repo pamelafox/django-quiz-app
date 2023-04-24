@@ -3,3 +3,5 @@ black
 pre-commit
 ruff
 coverage
+pytest-django
+pytest-cov

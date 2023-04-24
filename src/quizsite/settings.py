@@ -13,25 +13,47 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
+import environ
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False),
+    DBENGINE=(str, "django.db.backends.postgresql_psycopg2"),
+    DBSSL=(str, "disable"),
+    ADMIN_URL=(str, "admin/"),
+)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR.parent, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
-ADMIN_URL = "admin/"
+# Configure the domain name using the environment variable
+# that Azure automatically creates for us.
+if env.get_value("WEBSITE_HOSTNAME", default=None):
+    ALLOWED_HOSTS = [os.environ["WEBSITE_HOSTNAME"]]
+    CSRF_TRUSTED_ORIGINS = ["https://" + os.environ["WEBSITE_HOSTNAME"]]
+else:
+    ALLOWED_HOSTS = []
+    CSRF_TRUSTED_ORIGINS = [
+        "http://localhost:8000",
+    ]
+    if env.get_value("CODESPACE_NAME", default=None):
+        CSRF_TRUSTED_ORIGINS.append(
+            f"https://{env('CODESPACE_NAME')}-8000.{env('GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN')}"
+        )
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:8000",
-    f"https://{os.getenv('CODESPACE_NAME')}-8000.{os.getenv('GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN')}",
-]
+ADMIN_URL = env("ADMIN_URL")
 
 # Application definition
 
@@ -83,13 +105,15 @@ WSGI_APPLICATION = "quizsite.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.environ["DBNAME"],
-        "HOST": os.environ["DBHOST"],
-        "USER": os.environ["DBUSER"],
-        "PASSWORD": os.environ["DBPASS"],
+        "ENGINE": env("DBENGINE"),
+        "NAME": env("DBNAME"),
+        "HOST": env("DBHOST"),
+        "USER": env("DBUSER"),
+        "PASSWORD": env("DBPASS"),
+        "OPTIONS": {"sslmode": env("DBSSL")},
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -128,7 +152,11 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 # https://whitenoise.evans.io/en/stable/django.html
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type

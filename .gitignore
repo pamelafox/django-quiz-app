@@ -4,3 +4,5 @@ staticfiles/
 .coverage
 .env
 .azure
+pytest.xml
+pytest-coverage.txt

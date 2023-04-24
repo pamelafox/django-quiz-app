@@ -37,7 +37,7 @@
         "panel": "dedicated"
       }
     }, {
-      "label": "Run migrations",
+      "label": "Apply migrations",
       "type": "shell",
       "command": "./src/manage.py migrate",
       "problemMatcher": [],
@@ -49,6 +49,15 @@
       "label": "Load seed data",
       "type": "shell",
       "command": "./src/manage.py loaddata seed_data.json",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    }, {
+      "label": "Flush database",
+      "type": "shell",
+      "command": "./src/manage.py flush --noinput",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",

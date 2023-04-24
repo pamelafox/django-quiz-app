@@ -36,7 +36,9 @@ def display_question(request, quiz_id, question_id):
 
 def grade_question(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    answer = getattr(question, "multiplechoiceanswer", None) or getattr(question, "freetextanswer")
+    answer = question.get_answer()
+    if answer is None:
+        return render(request, "quizzes/partial.html", {"error": "Question must have an answer"}, status=422)
     is_correct = answer.is_correct(request.POST.get("answer"))
     return render(
         request,
