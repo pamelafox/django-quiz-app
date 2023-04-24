@@ -39,25 +39,19 @@ If you're not using one of those options for opening the project, then you'll ne
 
 1. Create an `.env` file using `.env.sample` as a guide. Set the value of `DBNAME` to the name of an existing database in your local PostgreSQL instance. Set the values of `DBHOST`, `DBUSER`, and `DBPASS` as appropriate for your local PostgreSQL instance. If you're in the devcontainer, copy the values exactly from `.env.sample`.
 
-2. Fill in a secret value for `SECRET_KEY`. You can use this command to generate an appropriate value.
-
-    ```shell
-    python -c 'import secrets; print(secrets.token_hex())'
-    ```
-
-3. Run the migrations:
+2. Run the migrations: (Also available as a VS Code task)
 
     ```
     python3 src/manage.py migrate
     ```
 
-4. Run the local server at port 8000:
+3. Run the local server at port 8000: (Also available as a VS Code task)
 
     ```
     python3 src/manage.py runserver 8000
     ```
 
-5. Navigate to the displayed URL to verify the website is working.
+4. Navigate to the displayed URL to verify the website is working.
 
 ### Admin
 

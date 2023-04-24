@@ -1,42 +1,6 @@
 {
     "version": "2.0.0",
-    "tasks": [{
-      "label": "Open Django shell",
-      "type": "shell",
-      "command": "./src/manage.py shell",
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      }
-    }, {
-      "label": "Create super user",
-      "type": "shell",
-      "command": "./src/manage.py createsuperuser",
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      }
-    }, {
-      "label": "Run Django tests",
-      "type": "shell",
-      "command": "./src/manage.py test",
-      "group": "test",
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated"
-      }
-    }, {
-      "label": "Make migrations",
-      "type": "shell",
-      "command": "./src/manage.py makemigrations",
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated"
-      }
-    }, {
+    "tasks": [ {
       "label": "Apply migrations",
       "type": "shell",
       "command": "./src/manage.py migrate",
@@ -55,7 +19,34 @@
         "panel": "dedicated"
       }
     }, {
-      "label": "Flush database",
+      "label": "Create super user",
+      "type": "shell",
+      "command": "./src/manage.py createsuperuser",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    }, {
+      "label": "Make migrations",
+      "type": "shell",
+      "command": "./src/manage.py makemigrations",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    }, {
+      "label": "Open Django shell",
+      "type": "shell",
+      "command": "./src/manage.py shell",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    }, {
+      "label": "Remove all data from DB (flush)",
       "type": "shell",
       "command": "./src/manage.py flush --noinput",
       "problemMatcher": [],
@@ -63,5 +54,5 @@
         "reveal": "always",
         "panel": "dedicated"
       }
-    }]
+    }, ]
   }
