@@ -66,17 +66,19 @@ module web 'core/host/appservice.bicep' = {
     tags: union(tags, { 'azd-service-name': 'web' })
     appServicePlanId: appServicePlan.outputs.id
     runtimeName: 'python'
-    runtimeVersion: '3.10'
+    runtimeVersion: '3.11'
     scmDoBuildDuringDeployment: true
     ftpsState: 'Disabled'
     managedIdentity: true
     appCommandLine: 'python manage.py migrate && gunicorn --workers 2 --threads 4 --timeout 60 --access-logfile \'-\' --error-logfile \'-\' --bind=0.0.0.0:8000 --chdir=/home/site/wwwroot quizsite.wsgi'
     appSettings: {
       ADMIN_URL: 'admin${uniqueString(appServicePlan.outputs.id)}'
-      DBHOST: postgresServerName
+      DBENGINE: 'django.db.backends.postgresql'
+      DBHOST: '${postgresServerName}.postgres.database.azure.com'
       DBNAME: postgresDatabaseName
       DBUSER: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=postgresAdminUser)'
       DBPASS: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=postgresAdminPassword)'
+      DBSSL: 'require'
       SECRET_KEY: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=djangoSecretKey)'
     }
   }

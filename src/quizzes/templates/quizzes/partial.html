@@ -1,5 +1,13 @@
+{% if error %}
+<div class="alert alert-danger" role="alert">
+  {{ error }}
+</div>
+{% else %}
+
 {% if is_correct %}
 ✅ You got it!
 {% else %}
 ❌ Sorry! The correct answer is {{ correct_answer }}
+{% endif %}
+
 {% endif %}

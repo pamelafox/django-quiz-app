@@ -53,12 +53,12 @@ class IndexViewTests(TestCase):
         response = self.client.get(reverse("quizzes:index"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "No quizzes are available.")
-        self.assertQuerysetEqual(response.context["quiz_list"], [])
+        self.assertQuerySetEqual(response.context["quiz_list"], [])
 
     def test_one_quiz(self):
         quiz, _, _ = create_quiz()
         response = self.client.get(reverse("quizzes:index"))
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             response.context["quiz_list"],
             [quiz],
         )

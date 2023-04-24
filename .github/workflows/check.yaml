@@ -40,5 +40,9 @@ jobs:
             SECRET_KEY: django-insecure-key-${{ github.run_id }}-${{ github.run_attempt }}
           run: |
             python src/manage.py collectstatic
-            coverage run --source='.' src/manage.py test quizzes
-            coverage report
+            python3 -m pytest | tee pytest-coverage.txt
+        - name: Pytest coverage comment
+          uses: MishaKav/pytest-coverage-comment@main
+          with:
+              pytest-coverage-path: ./pytest-coverage.txt
+              junitxml-path: ./pytest.xml
