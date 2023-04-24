@@ -5,3 +5,4 @@ ruff
 coverage
 pytest-django
 pytest-cov
+pytest-dotenv

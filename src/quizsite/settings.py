@@ -21,6 +21,8 @@ env = environ.Env(
     DBENGINE=(str, "django.db.backends.postgresql_psycopg2"),
     DBSSL=(str, "disable"),
     ADMIN_URL=(str, "admin/"),
+    STATIC_BACKEND=(str, "django.contrib.staticfiles.storage.StaticFilesStorage"),
+    WHITENOISE_MANIFEST_STRICT=(bool, False),
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -154,10 +156,12 @@ STATIC_URL = "static/"
 # https://whitenoise.evans.io/en/stable/django.html
 STORAGES = {
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": env("STATIC_BACKEND"),
     },
 }
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+WHITENOISE_MANIFEST_STRICT = env("WHITENOISE_MANIFEST_STRICT")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

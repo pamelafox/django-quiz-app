@@ -79,6 +79,7 @@ module web 'core/host/appservice.bicep' = {
       DBUSER: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=postgresAdminUser)'
       DBPASS: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=postgresAdminPassword)'
       DBSSL: 'require'
+      STATIC_BACKEND: 'whitenoise.storage.CompressedManifestStaticFilesStorage'
       SECRET_KEY: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=djangoSecretKey)'
     }
   }

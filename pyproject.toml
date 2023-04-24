@@ -17,4 +17,5 @@ exclude = '''
 addopts = "-ra --cov=src --cov-report=term-missing:skip-covered --junitxml=pytest.xml"
 pythonpath = ["src"]
 python_files = ["tests.py"]
-DJANGO_SETTINGS_MODULE = "quizsite.settings"
+env_override_existing_values = 1
+env_files = [".env", ".env.test"]
