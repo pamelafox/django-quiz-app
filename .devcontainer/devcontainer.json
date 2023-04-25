@@ -47,12 +47,10 @@
 
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
-				"ms-azuretools.azure-dev",
 				"ms-python.python",
 				"ms-python.vscode-pylance",
 				"charliermarsh.ruff",
 				"ms-azuretools.vscode-bicep",
-				"GitHub.vscode-github-actions",
 				"mtxr.sqltools",
 				"mtxr.sqltools-driver-pg",
 				"spmeesseman.vscode-taskexplorer"
