@@ -40,7 +40,8 @@
 				"python.formatting.provider": "black",
 				"files.exclude": {
 					"**/*.coverage": true,
-					".ruff_cache": true
+					".ruff_cache": true,
+					".pytest_cache": true
 				}
 			},
 
@@ -51,6 +52,7 @@
 				"ms-python.vscode-pylance",
 				"charliermarsh.ruff",
 				"ms-azuretools.vscode-bicep",
+				"GitHub.vscode-github-actions",
 				"mtxr.sqltools",
 				"mtxr.sqltools-driver-pg",
 				"spmeesseman.vscode-taskexplorer"
