@@ -17,7 +17,7 @@ class FreeTextAnswerModelTests(TestCase):
     def test_case_insensitive(self):
         ans = FreeTextAnswer(correct_answer="Milkweed", case_sensitive=False)
         self.assertTrue(ans.is_correct("Milkweed"))
-        self.assertTrue(ans.is_correct("milkweeed"))
+        self.assertTrue(ans.is_correct("milkweed"))
         self.assertFalse(ans.is_correct("thistle"))
 
     def test_case_sensitive(self):
