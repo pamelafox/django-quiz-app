@@ -39,10 +39,9 @@ jobs:
             DBPASS: postgres
             SECRET_KEY: django-insecure-key-${{ github.run_id }}-${{ github.run_attempt }}
           run: |
-            set -o pipefail
-            python3 -m pytest | tee pytest-coverage.txt
+            python3 -m pytest
         - name: Pytest coverage comment
           uses: MishaKav/pytest-coverage-comment@main
           with:
-              pytest-coverage-path: ./pytest-coverage.txt
+              pytest-coverage-path: ./pytest-coverage.xml
               junitxml-path: ./pytest.xml
