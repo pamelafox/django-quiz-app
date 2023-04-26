@@ -38,6 +38,8 @@ SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
+# This allows us to use the VS Code debugger to break on exceptions
+DEBUG_PROPAGATE_EXCEPTIONS = env("DEBUG")
 
 # Configure the domain name using the environment variable
 # that Azure automatically creates for us.

@@ -35,7 +35,8 @@
 					"editor.formatOnSave": true,
 					"editor.codeActionsOnSave": {
 						"source.fixAll": true
-					}
+					},
+					"editor.defaultFormatter": "ms-python.black-formatter"
 				},
 				"python.formatting.provider": "black",
 				"files.exclude": {
@@ -49,6 +50,7 @@
 			"extensions": [
 				"ms-python.python",
 				"ms-python.vscode-pylance",
+				"ms-python.black-formatter",
 				"charliermarsh.ruff",
 				"ms-azuretools.vscode-bicep",
 				"mtxr.sqltools",
