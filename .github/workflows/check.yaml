@@ -44,6 +44,7 @@ jobs:
             python3 -m pytest --cov-report=xml:coverage.xml --junitxml=pytest.xml
         - name: Pytest coverage comment
           uses: MishaKav/pytest-coverage-comment@main
+          if: github.event_name == 'pull_request'
           with:
               pytest-coverage-path: ./pytest-coverage.xml
               junitxml-path: ./pytest.xml
