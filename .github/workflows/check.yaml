@@ -1,5 +1,7 @@
 name: Python checks
 on: [push, pull_request]
+permissions:
+  pull-requests: write
 
 jobs:
   build:
