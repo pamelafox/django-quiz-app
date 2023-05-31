@@ -31,12 +31,12 @@
   }
 },
 {
-  "model": "quizzes.multiplechoiceanswer",
+  "model": "quizzes.freetextanswer",
   "pk": 1,
   "fields": {
     "question": 1,
     "correct_answer": "Guido van Rossum",
-    "choices": "[\"Guido van Rossum\", \"Ada Lovelace\", \"Rob Pike\", \"Kathleen Booth\"]"
+    "case_sensitive": true
   }
 },
 {
