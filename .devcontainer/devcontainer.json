@@ -3,6 +3,9 @@
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
 	"workspaceFolder": "/workspace",
+	"features": {
+		"ghcr.io/azure/azure-dev/azd:latest": {}
+	},
 	"forwardPorts": [8000, 5432],
 	"portsAttributes": {
 		"8000": {"label": "Django port", "onAutoForward": "notify"},
