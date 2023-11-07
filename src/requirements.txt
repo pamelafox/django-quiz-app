@@ -1,4 +1,4 @@
-Django==4.2.6
+Django==4.2.7
 psycopg2==2.9.9
 python-dotenv==1.0.0
 whitenoise[brotli]==6.5.0
