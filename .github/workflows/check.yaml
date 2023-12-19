@@ -16,9 +16,9 @@ jobs:
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
-        - uses: actions/checkout@v3
+        - uses: actions/checkout@v4
         - name: Set up Python 3
-          uses: actions/setup-python@v3
+          uses: actions/setup-python@v5
           with:
             python-version: 3.9
         - name: Install dependencies

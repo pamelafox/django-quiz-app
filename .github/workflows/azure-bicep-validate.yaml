@@ -17,14 +17,14 @@ jobs:
     steps:
       - name: Checkout PR
         if: ${{ github.event_name == 'pull_request'}}
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Checkout branch
         if: ${{ github.event_name == 'push'}}
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Build Bicep
         uses: azure/CLI@v1
