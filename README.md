@@ -60,7 +60,7 @@ This app comes with the built-in Django admin interface.
 1. Create a superuser:
 
 ```
-python3 manage.py createsuperuser
+python3 src/manage.py createsuperuser
 ```
 
 2. Restart the server and navigate to "/admin"
