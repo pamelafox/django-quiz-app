@@ -52,7 +52,7 @@ module postgresServer 'core/database/postgresql/flexibleserver.bicep' = {
     version: '14'
     administratorLogin: postgresAdminUser
     administratorLoginPassword: postgresAdminPassword
-    databaseNames: [ postgresDatabaseName ]
+    databaseNames: [postgresDatabaseName]
     allowAzureIPsFirewall: true
   }
 }
@@ -136,15 +136,17 @@ var secrets = [
 ]
 
 @batchSize(1)
-module keyVaultSecrets './core/security/keyvault-secret.bicep' = [for secret in secrets: {
-  name: 'keyvault-secret-${secret.name}'
-  scope: resourceGroup
-  params: {
-    keyVaultName: keyVault.outputs.name
-    name: secret.name
-    secretValue: secret.value
+module keyVaultSecrets './core/security/keyvault-secret.bicep' = [
+  for secret in secrets: {
+    name: 'keyvault-secret-${secret.name}'
+    scope: resourceGroup
+    params: {
+      keyVaultName: keyVault.outputs.name
+      name: secret.name
+      secretValue: secret.value
+    }
   }
-}]
+]
 
 module logAnalyticsWorkspace 'core/monitor/loganalytics.bicep' = {
   name: 'loganalytics'
