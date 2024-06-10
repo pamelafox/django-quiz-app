@@ -90,7 +90,7 @@ module web 'core/host/appservice.bicep' = {
     appSettings: {
       ADMIN_URL: 'admin${uniqueString(appServicePlan.outputs.id)}'
       DBENGINE: 'django.db.backends.postgresql'
-      DBHOST: '${postgresServerName}.postgres.database.azure.com' // todo replace with ouput
+      DBHOST: postgresServer.outputs.POSTGRES_DOMAIN_NAME
       DBNAME: postgresDatabaseName
       DBUSER: webAppName
       DBSSL: 'require'
