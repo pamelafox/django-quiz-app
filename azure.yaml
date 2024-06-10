@@ -8,3 +8,10 @@ services:
     project: ./src
     language: py
     host: appservice
+hooks:
+    postprovision:
+      posix:
+        shell: sh
+        run: ./scripts/setup_postgres_azurerole.sh
+        interactive: true
+        continueOnError: false

@@ -108,12 +108,13 @@ WSGI_APPLICATION = "quizsite.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": env("DBENGINE"),
+        "ENGINE": "quizsite.postgresql",
         "NAME": env("DBNAME"),
         "HOST": env("DBHOST"),
         "USER": env("DBUSER"),
-        "PASSWORD": env("DBPASS"),
+        "PASSWORD": env("DBPASS", default="PASSWORD_WILL_BE_SET_LATER"),
         "OPTIONS": {"sslmode": env("DBSSL")},
+        "CONN_MAX_AGE": 60 * 60 * 6,  # 6 hours
     }
 }
 

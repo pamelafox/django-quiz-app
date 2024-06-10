@@ -9,9 +9,19 @@ param name string
 @description('Primary location for all resources')
 param location string
 
-@secure()
-@description('PostGreSQL Server administrator password')
-param postgresAdminPassword string
+@description('Entra admin role name')
+param postgresEntraAdministratorName string
+
+@description('Entra admin role object ID (in Entra)')
+param postgresEntraAdministratorObjectId string
+
+@description('Entra admin user type')
+@allowed([
+  'User'
+  'Group'
+  'ServicePrincipal'
+])
+param postgresEntraAdministratorType string = 'User'
 
 @description('Id of the user or app to assign application roles')
 param principalId string = ''
@@ -19,6 +29,9 @@ param principalId string = ''
 @secure()
 @description('Django SECRET_KEY for cryptographic signing')
 param djangoSecretKey string
+
+@description('Running on GitHub Actions?')
+param runningOnGh bool = false
 
 var resourceToken = toLower(uniqueString(subscription().id, name, location))
 var tags = { 'azd-env-name': name }
@@ -32,7 +45,6 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 var prefix = '${name}-${resourceToken}'
 
 var postgresServerName = '${prefix}-postgresql'
-var postgresAdminUser = 'admin${uniqueString(resourceGroup.id)}'
 var postgresDatabaseName = 'django'
 
 module postgresServer 'core/database/postgresql/flexibleserver.bicep' = {
@@ -50,18 +62,22 @@ module postgresServer 'core/database/postgresql/flexibleserver.bicep' = {
       storageSizeGB: 32
     }
     version: '14'
-    administratorLogin: postgresAdminUser
-    administratorLoginPassword: postgresAdminPassword
+    authType: 'EntraOnly'
+    entraAdministratorName: postgresEntraAdministratorName
+    entraAdministratorObjectId: postgresEntraAdministratorObjectId
+    entraAdministratorType: postgresEntraAdministratorType
     databaseNames: [ postgresDatabaseName ]
     allowAzureIPsFirewall: true
+    allowAllIPsFirewall: true // Necessary for post-provision script, can be disabled after
   }
 }
 
+var webAppName = '${prefix}-app-service'
 module web 'core/host/appservice.bicep' = {
   name: 'appservice'
   scope: resourceGroup
   params: {
-    name: '${prefix}-appservice'
+    name: webAppName
     location: location
     tags: union(tags, { 'azd-service-name': 'web' })
     appServicePlanId: appServicePlan.outputs.id
@@ -74,10 +90,9 @@ module web 'core/host/appservice.bicep' = {
     appSettings: {
       ADMIN_URL: 'admin${uniqueString(appServicePlan.outputs.id)}'
       DBENGINE: 'django.db.backends.postgresql'
-      DBHOST: '${postgresServerName}.postgres.database.azure.com'
+      DBHOST: '${postgresServerName}.postgres.database.azure.com' // todo replace with ouput
       DBNAME: postgresDatabaseName
-      DBUSER: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=postgresAdminUser)'
-      DBPASS: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=postgresAdminPassword)'
+      DBUSER: webAppName
       DBSSL: 'require'
       STATIC_BACKEND: 'whitenoise.storage.CompressedManifestStaticFilesStorage'
       SECRET_KEY: '@Microsoft.KeyVault(VaultName=${keyVault.outputs.name};SecretName=djangoSecretKey)'
@@ -116,7 +131,26 @@ module keyVault './core/security/keyvault.bicep' = {
     name: '${take(replace(prefix, '-', ''), 17)}-vault'
     location: location
     tags: tags
+  }
+}
+
+module userKeyVaultAccess 'core/security/role.bicep' = {
+  name: 'user-keyvault-access'
+  scope: resourceGroup
+  params: {
     principalId: principalId
+    principalType: runningOnGh ? 'ServicePrincipal' : 'User'
+    roleDefinitionId: '00482a5a-887f-4fb3-b363-3b7fe8e74483'
+  }
+}
+
+module backendKeyVaultAccess 'core/security/role.bicep' = {
+  name: 'backend-keyvault-access'
+  scope: resourceGroup
+  params: {
+    principalId: web.outputs.identityPrincipalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: '00482a5a-887f-4fb3-b363-3b7fe8e74483'
   }
 }
 
@@ -124,14 +158,6 @@ var secrets = [
   {
     name: 'djangoSecretKey'
     value: djangoSecretKey
-  }
-  {
-    name: 'postgresAdminUser'
-    value: postgresAdminUser
-  }
-  {
-    name: 'postgresAdminPassword'
-    value: postgresAdminPassword
   }
 ]
 
@@ -146,6 +172,8 @@ module keyVaultSecrets './core/security/keyvault-secret.bicep' = [for secret in 
   }
 }]
 
+
+
 module logAnalyticsWorkspace 'core/monitor/loganalytics.bicep' = {
   name: 'loganalytics'
   scope: resourceGroup
@@ -156,6 +184,12 @@ module logAnalyticsWorkspace 'core/monitor/loganalytics.bicep' = {
   }
 }
 
+output WEB_APP_NAME string = webAppName
 output WEB_URI string = 'https://${web.outputs.uri}'
+output SERVICE_WEB_IDENTITY_NAME string = webAppName
+
 output AZURE_LOCATION string = location
 output AZURE_KEY_VAULT_NAME string = keyVault.outputs.name
+
+output POSTGRES_HOST string = postgresServer.outputs.POSTGRES_DOMAIN_NAME
+output POSTGRES_USERNAME string = postgresEntraAdministratorName
