@@ -1,8 +1,7 @@
+# Django + PostgreSQL sample app
+
 [![Open in GitHub Codespaces](https://img.shields.io/static/v1?style=for-the-badge&label=GitHub+Codespaces&message=Open&color=brightgreen&logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=pamelafox%2Fdjango-quiz-app&machine=standardLinux32gb&devcontainer_path=.devcontainer%2Fdevcontainer.json&location=WestUs2)
 [![Open in Remote - Containers](https://img.shields.io/static/v1?style=for-the-badge&label=Remote%20-%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com%2Fpamelafox%2Fdjango-quiz-app)
-
-
-# Quizzes app
 
 An example Django app that serves quizzes and lets people know how they scored. Quizzes and their questions are stored in a PostgreSQL database. There is no user authentication or per-user data stored.
 
@@ -36,18 +35,17 @@ If you're not using one of those options for opening the project, then you'll ne
 
 ## Local development
 
-
 1. Create an `.env` file using `.env.sample` as a guide. Set the value of `DBNAME` to the name of an existing database in your local PostgreSQL instance. Set the values of `DBHOST`, `DBUSER`, and `DBPASS` as appropriate for your local PostgreSQL instance. If you're in the devcontainer, copy the values exactly from `.env.sample`.
 
 2. Run the migrations: (Also available as a VS Code task)
 
-    ```
+    ```shell
     python3 src/manage.py migrate
     ```
 
 3. Run the local server at port 8000: (Also available as a VS Code task)
 
-    ```
+    ```shell
     python3 src/manage.py runserver 8000
     ```
 
@@ -59,9 +57,9 @@ This app comes with the built-in Django admin interface.
 
 1. Create a superuser:
 
-  ```
-  python3 src/manage.py createsuperuser
-  ```
+    ```shell
+    python3 src/manage.py createsuperuser
+    ```
 
 2. Restart the server and navigate to "/admin"
 
@@ -71,14 +69,13 @@ This app comes with the built-in Django admin interface.
 
 Run tests:
 
-```
+```shell
 python3 src/manage.py collectstatic
 coverage run --source='.' src/manage.py test quizzes
 coverage report
 ```
 
 The same tests are also run as a Github action.
-
 
 ## Deployment
 
@@ -102,7 +99,7 @@ This repository is set up for deployment on Azure App Service (w/PostgreSQL flex
 
 5. To be able to access `/admin`, you'll need a Django superuser. Navigate to the Azure Portal for the App Service, select SSH, and run this command:
 
-    ```
+    ```shell
     python manage.py createsuperuser
     ```
 
@@ -142,14 +139,13 @@ Pricing varies per region and usage, so it isn't possible to predict exact costs
 
 You can try the [Azure pricing calculator](https://azure.com/e/560b5f259111424daa7eb23c6848d164) for the resources:
 
-- Azure App Service: Basic Tier with 1 CPU core, 1.75GB RAM. Pricing is hourly. [Pricing](https://azure.microsoft.com/pricing/details/app-service/linux/)
-- PostgreSQL Flexible Server: Burstable Tier with 1 CPU core, 32GB storage. Pricing is hourly. [Pricing](https://azure.microsoft.com/pricing/details/postgresql/flexible-server/)
-- Key Vault: Standard tier. Costs are per transaction, a few transactions are used on each deploy. [Pricing](https://azure.microsoft.com/pricing/details/key-vault/)
-- Log analytics: Pay-as-you-go tier. Costs based on data ingested. [Pricing](https://azure.microsoft.com/pricing/details/monitor/)
+* Azure App Service: Basic Tier with 1 CPU core, 1.75GB RAM. Pricing is hourly. [Pricing](https://azure.microsoft.com/pricing/details/app-service/linux/)
+* PostgreSQL Flexible Server: Burstable Tier with 1 CPU core, 32GB storage. Pricing is hourly. [Pricing](https://azure.microsoft.com/pricing/details/postgresql/flexible-server/)
+* Key Vault: Standard tier. Costs are per transaction, a few transactions are used on each deploy. [Pricing](https://azure.microsoft.com/pricing/details/key-vault/)
+* Log analytics: Pay-as-you-go tier. Costs based on data ingested. [Pricing](https://azure.microsoft.com/pricing/details/monitor/)
 
 ⚠️ To avoid unnecessary costs, remember to take down your app if it's no longer in use,
 either by deleting the resource group in the Portal or running `azd down`.
-
 
 ## Getting help
 

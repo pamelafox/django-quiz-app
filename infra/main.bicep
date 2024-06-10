@@ -162,15 +162,17 @@ var secrets = [
 ]
 
 @batchSize(1)
-module keyVaultSecrets './core/security/keyvault-secret.bicep' = [for secret in secrets: {
-  name: 'keyvault-secret-${secret.name}'
-  scope: resourceGroup
-  params: {
-    keyVaultName: keyVault.outputs.name
-    name: secret.name
-    secretValue: secret.value
+module keyVaultSecrets './core/security/keyvault-secret.bicep' = [
+  for secret in secrets: {
+    name: 'keyvault-secret-${secret.name}'
+    scope: resourceGroup
+    params: {
+      keyVaultName: keyVault.outputs.name
+      name: secret.name
+      secretValue: secret.value
+    }
   }
-}]
+]
 
 
 
