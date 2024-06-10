@@ -66,7 +66,7 @@ module postgresServer 'core/database/postgresql/flexibleserver.bicep' = {
     entraAdministratorName: postgresEntraAdministratorName
     entraAdministratorObjectId: postgresEntraAdministratorObjectId
     entraAdministratorType: postgresEntraAdministratorType
-    databaseNames: [ postgresDatabaseName ]
+    databaseNames: [postgresDatabaseName]
     allowAzureIPsFirewall: true
     allowAllIPsFirewall: true // Necessary for post-provision script, can be disabled after
   }
@@ -173,8 +173,6 @@ module keyVaultSecrets './core/security/keyvault-secret.bicep' = [
     }
   }
 ]
-
-
 
 module logAnalyticsWorkspace 'core/monitor/loganalytics.bicep' = {
   name: 'loganalytics'
