@@ -11,11 +11,20 @@
       "principalId": {
         "value": "${AZURE_PRINCIPAL_ID}"
       },
-      "postgresAdminPassword": {
-        "value": "$(secretOrRandomPassword ${AZURE_KEY_VAULT_NAME} postgresAdminPassword)"
+      "runningOnGh": {
+        "value": "${GITHUB_ACTIONS}"
       },
       "djangoSecretKey": {
         "value": "$(secretOrRandomPassword ${AZURE_KEY_VAULT_NAME} djangoSecretKey)"
+      },
+      "postgresEntraAdministratorName": {
+        "value": "useradmin"
+      },
+      "postgresEntraAdministratorObjectId": {
+        "value": "${AZURE_PRINCIPAL_ID}"
+      },
+      "postgresEntraAdministratorType": {
+        "value": "User"
       }
     }
   }
