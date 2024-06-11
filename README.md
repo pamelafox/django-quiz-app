@@ -127,10 +127,9 @@ azd pipeline config
 It is important to secure the databases in web applications to prevent unwanted data access.
 This infrastructure uses the following mechanisms to secure the PostgreSQL database:
 
-* Azure Firewall: The database is accessible only from other Azure IPs, not from public IPs. (Note that includes other customers using Azure).
-* Admin Username: Randomly generated and stored in Key Vault.
-* Admin Password: Randomly generated and stored in Key Vault.
-* PostgreSQL Version: Latest available on Azure, version 14, which includes security improvements.
+* Azure Firewall: The database is accessible from all IPs. Once you've set up the database, you can restrict access to only Azure IPs by running `azd env set POSTGRES_ALLOW_ALL_IPS false` followed by `azd provision`.
+* PostgreSQL Authentication: Passwordless connection using [Microsoft Entra Managed Identity](https://learn.microsoft.com/azure/postgresql/flexible-server/how-to-connect-with-managed-identity).
+* PostgreSQL Version: Latest available on Azure, version 16, which includes security improvements.
 * Django Admin Interface: The URL (typically "/admin") is a unique string generated based on the App Service Plan ID.
 
 ⚠️ For even more security, consider using an Azure Virtual Network to connect the Web App to the Database.
