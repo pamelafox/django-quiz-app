@@ -49,7 +49,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 var prefix = '${name}-${resourceToken}'
 
 var postgresServerName = '${prefix}-postgresql'
-var postgresDatabaseName = 'django'
+var postgresDatabaseName = 'postgres'
 
 module postgresServer 'core/database/postgresql/flexibleserver.bicep' = {
   name: 'postgresql'
@@ -70,7 +70,6 @@ module postgresServer 'core/database/postgresql/flexibleserver.bicep' = {
     entraAdministratorName: postgresEntraAdministratorName
     entraAdministratorObjectId: postgresEntraAdministratorObjectId
     entraAdministratorType: postgresEntraAdministratorType
-    databaseNames: [postgresDatabaseName]
     allowAzureIPsFirewall: true
     allowAllIPsFirewall: postgresAllowAllIPs
   }
