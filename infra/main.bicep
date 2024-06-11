@@ -33,6 +33,10 @@ param djangoSecretKey string
 @description('Running on GitHub Actions?')
 param runningOnGh bool = false
 
+// Necessary for post-provision script, can be disabled after
+@description('Allow all IPs to connect to the PostgreSQL server')
+param postgresAllowAllIPs bool = true
+
 var resourceToken = toLower(uniqueString(subscription().id, name, location))
 var tags = { 'azd-env-name': name }
 
@@ -61,14 +65,14 @@ module postgresServer 'core/database/postgresql/flexibleserver.bicep' = {
     storage: {
       storageSizeGB: 32
     }
-    version: '14'
+    version: '16'
     authType: 'EntraOnly'
     entraAdministratorName: postgresEntraAdministratorName
     entraAdministratorObjectId: postgresEntraAdministratorObjectId
     entraAdministratorType: postgresEntraAdministratorType
     databaseNames: [postgresDatabaseName]
     allowAzureIPsFirewall: true
-    allowAllIPsFirewall: true // Necessary for post-provision script, can be disabled after
+    allowAllIPsFirewall: postgresAllowAllIPs
   }
 }
 
@@ -193,3 +197,4 @@ output AZURE_KEY_VAULT_NAME string = keyVault.outputs.name
 
 output POSTGRES_HOST string = postgresServer.outputs.POSTGRES_DOMAIN_NAME
 output POSTGRES_USERNAME string = postgresEntraAdministratorName
+output POSTGRES_ALLOW_ALL_IPS bool = postgresAllowAllIPs

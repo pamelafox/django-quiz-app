@@ -25,6 +25,9 @@
       },
       "postgresEntraAdministratorType": {
         "value": "User"
+      },
+      "postgresAllowAllIPs": {
+        "value": "${POSTGRES_ALLOW_ALL_IPS=true}"
       }
     }
   }
