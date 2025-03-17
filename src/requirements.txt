@@ -3,4 +3,4 @@ psycopg2==2.9.9
 python-dotenv==1.0.1
 whitenoise[brotli]==6.7.0
 django-environ==0.11.2
-azure-identity==1.17.1
+azure-identity==1.21.0
