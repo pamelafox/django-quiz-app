@@ -27,7 +27,7 @@ jobs:
             pip install -r requirements-dev.txt
         - name: Lint with ruff
           run: |
-            ruff .
+            ruff check .
         - name: Check formatting with black
           uses: psf/black@stable
           with:
