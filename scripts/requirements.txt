@@ -1,2 +1,2 @@
-psycopg2==2.9.9
+psycopg2==2.9.10
 azure-identity==1.21.0
