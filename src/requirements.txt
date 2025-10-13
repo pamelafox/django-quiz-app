@@ -1,5 +1,5 @@
 Django==4.2.7
-psycopg2==2.9.10
+psycopg2==2.9.11
 python-dotenv==1.1.1
 whitenoise[brotli]==6.11.0
 django-environ==0.12.0
